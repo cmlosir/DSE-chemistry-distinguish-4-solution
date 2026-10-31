@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSE Chemistry: Qualitative Analysis — Distinguishing Four Solutions</title>
+<style>
+:root{
+  --bg:#f3f5f8;--panel:#fff;--ink:#1b2532;--muted:#596675;--line:#d4dbe3;
+  --accent:#1c5cb8;--accent-soft:#e8f0fb;--ok:#17713a;--ok-bg:#e6f4ea;
+  --warn:#7d5200;--warn-bg:#fff4d9;--bad:#a8201a;--bad-bg:#fdeceb;--lab:#1e2935;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.reduce-motion{scroll-behavior:auto}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans","PingFang HK","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:16px}
+h1{font-size:1.25rem;margin:0;line-height:1.3}
+h2{font-size:1.15rem;margin:0 0 .6rem}
+h3{font-size:1rem;margin:.2rem 0 .4rem}
+p{margin:.4rem 0}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:12px;top:8px;background:#fff;padding:6px 10px;z-index:10;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.topbar{background:#fff;border-bottom:1px solid var(--line)}
+.topbar-inner{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;padding:12px 16px}
+.subtitle{color:var(--muted);font-size:.9rem;margin:.2rem 0 0}
+.controls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+fieldset.mode{border:1px solid var(--line);border-radius:8px;padding:4px 10px 6px;margin:0;display:flex;gap:12px;flex-wrap:wrap}
+fieldset.mode legend{font-size:.8rem;color:var(--muted);padding:0 4px}
+fieldset.mode label{display:flex;align-items:center;gap:4px;min-height:32px;cursor:pointer}
+.ctl-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.rm{display:flex;align-items:center;gap:6px;font-size:.92rem;cursor:pointer}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.banner{background:var(--warn-bg);border:1px solid #f0d58c;color:#4d3800;border-radius:10px;padding:10px 14px;margin:14px 0 6px}
+.round-info{color:var(--muted);font-size:.9rem;margin:6px 0}
+.warn-box{background:var(--warn-bg);border:1px solid #f0d58c;border-radius:8px;padding:8px 12px;color:#4d3800}
+.err-box{background:var(--bad-bg);border:1px solid #f1b5b0;border-radius:8px;padding:8px 12px;color:var(--bad)}
+.ok-box{background:var(--ok-bg);border:1px solid #a9d8b8;border-radius:8px;padding:8px 12px;color:var(--ok)}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+.btn{font:inherit;padding:.5em .95em;border-radius:8px;border:1px solid #aeb8c3;background:#fff;color:var(--ink);cursor:pointer;min-height:44px;touch-action:manipulation}
+.btn:hover:not(:disabled){background:#f2f5f9}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn.primary:hover:not(:disabled){background:#174d9b}
+.btn.small{min-height:36px;padding:.25em .7em;font-size:.88rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid #e89b00;outline-offset:2px}
+select,input[type=text],textarea{font:inherit;padding:.45em .6em;border:1px solid #9aa6b2;border-radius:8px;min-height:44px;width:100%;background:#fff;color:var(--ink)}
+select:disabled,input:disabled,textarea:disabled{background:#f0f2f5;color:#6b7684}
+textarea{min-height:120px;resize:vertical}
+label{display:block;font-weight:600;font-size:.92rem}
+[aria-invalid="true"]{border-color:var(--bad);box-shadow:0 0 0 2px var(--bad-bg)}
+.ss{display:inline-flex;flex-direction:column;vertical-align:-.45em;line-height:1;font-size:.72em;margin-left:1px}
+.ss sup,.ss sub{font-size:1em;line-height:1;vertical-align:baseline;position:static}
+sub,sup{line-height:0}
+.task-grid{display:grid;gap:14px}
+@media(min-width:860px){.task-grid{grid-template-columns:1fr 1fr}}
+.task-grid ul,.task-grid ol{margin:.3rem 0;padding-left:1.3rem}
+.ack{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.ack label{display:flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
+.ack input{width:20px;height:20px}
+.lab-grid{display:grid;grid-template-columns:1fr;gap:14px;margin:14px 0}
+.lab-grid>.card{margin:0}
+@media(min-width:980px){.lab-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+.lock{margin:6px 0 10px}
+.bottles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:8px 0}
+.bottle{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border:2px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;font:inherit;color:var(--ink);min-height:44px;position:relative;touch-action:manipulation}
+.bottle svg{width:54px;height:80px}
+.bottle .bname{font-weight:700}
+.bottle .bdesc{font-size:.75rem;color:var(--muted)}
+.bottle .order{position:absolute;top:4px;right:4px;font-size:.72rem;font-weight:700;background:var(--accent);color:#fff;border-radius:6px;padding:0 5px;display:none}
+.bottle[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.bottle[aria-pressed="true"] .order{display:block}
+.bottle:disabled{opacity:.5;cursor:not-allowed}
+.lab-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}
+.viewer{background:var(--lab);color:#e9eff6;border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:1fr;gap:6px;justify-items:center}
+@media(min-width:560px){.viewer{grid-template-columns:180px 1fr;justify-items:start;align-items:center}}
+.viewer svg{width:170px;height:auto;max-height:280px;display:block}
+.viewer .vtext{min-width:0}
+.tube-label{font-weight:700;color:#fff}
+#caption{min-height:4.5em;color:#e9eff6}
+#caption b{color:#fff}
+.viewer .btn{background:#fff}
+.liq{transform-box:fill-box;transform-origin:50% 100%;transition:transform .8s ease}
+#cloud{transition:opacity 1.2s ease}
+#tubeGroup{transform-box:fill-box;transform-origin:50% 100%}
+#tubeGroup.shake{animation:shake .38s ease-in-out 3}
+#dropper{transition:opacity .25s}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
+.drop{animation:drop .45s ease-in 2 both}
+@keyframes drop{from{transform:translateY(0);opacity:1}to{transform:translateY(130px);opacity:0}}
+.bubble{animation:rise var(--t,1.5s) ease-in var(--d,0s) 5 both}
+@keyframes rise{0%{transform:translateY(0);opacity:0}12%{opacity:.95}100%{transform:translateY(var(--h,-90px));opacity:0}}
+.particle{animation:appear .9s ease-out var(--d,0s) both}
+@keyframes appear{from{opacity:0}to{opacity:1}}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{animation:none!important;transition:none!important}
+.log{list-style:none;margin:6px 0 0;padding:0;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px}
+.log li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line)}
+.log li:last-child{border-bottom:none}
+.log .empty{color:var(--muted)}
+.progress{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:4px 0 8px}
+.progress progress{width:160px;height:14px}
+.rec{border:1px solid var(--line);border-left-width:6px;border-radius:10px;padding:10px 12px;margin:10px 0;transition:box-shadow .3s}
+.rec.done{border-left-color:var(--ok)}
+.rec.todo{border-left-color:#b9c3cd}
+.rec.flash{box-shadow:0 0 0 3px #e89b00}
+.rec-head{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-bottom:6px}
+.rec-title{margin:0;font-size:1.05rem;min-width:56px}
+.rec-actions{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.rec-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:640px){.rec-grid{grid-template-columns:minmax(170px,.8fr) 1.5fr}}
+.txt-row{display:flex;gap:6px;align-items:stretch}
+.txt-row input{flex:1;min-width:0}
+.tip{font-size:.85rem;color:var(--warn);margin:.3rem 0 0}
+.badge{font-size:.8rem;font-weight:700;border-radius:999px;padding:2px 9px;border:1px solid}
+.badge.ok{color:var(--ok);background:var(--ok-bg);border-color:#a9d8b8}
+.badge.todo{color:var(--muted);background:#f1f3f6;border-color:var(--line)}
+.phrases{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-top:10px;font-size:.92rem}
+.phrases ul{margin:.3rem 0;padding-left:1.2rem}
+.deduce-grid{display:grid;gap:16px}
+@media(min-width:980px){.deduce-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:start}}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:8px 0}
+@media(min-width:640px){.answers{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.submit-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+.hints{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.hint{background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:8px;padding:8px 12px;margin:8px 0}
+.hint .hl{font-weight:700;color:var(--accent);font-size:.85rem}
+.tag{display:inline-block;font-size:.82rem;font-weight:700;border-radius:6px;padding:1px 7px;white-space:nowrap}
+.tag.ok{background:var(--ok-bg);color:var(--ok)}
+.tag.bad{background:var(--bad-bg);color:var(--bad)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+.obs-tag,.inf-tag{display:inline-block;font-size:.75rem;font-weight:700;border-radius:5px;padding:0 6px;margin-right:4px;text-transform:uppercase;letter-spacing:.02em}
+.obs-tag{background:#e3eefc;color:#18478c;border:1px solid #b9d0f0}
+.inf-tag{background:#f3e8fb;color:#5c2483;border:1px solid #d9c0ec}
+.table-wrap{overflow-x:auto;margin:6px 0 12px}
+table.fb{width:100%;border-collapse:collapse;font-size:.93rem;min-width:640px}
+table.fb th,table.fb td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.fb thead th{background:#f1f4f8}
+.eq{font-family:"Cambria Math","Times New Roman",serif;font-size:1.05rem;margin:4px 0}
+.eq-list li{margin:4px 0}
+.score{font-size:1.15rem}
+.steps li{margin:8px 0}
+.steps p{margin:.2rem 0}
+.notes-list li{margin:6px 0}
+dialog{border:1px solid var(--line);border-radius:12px;padding:18px;max-width:440px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(15,25,35,.45)}
+dialog menu{display:flex;justify-content:flex-end;gap:8px;padding:0;margin:14px 0 0}
+details summary{cursor:pointer;font-weight:700;font-size:1.05rem;min-height:36px;display:flex;align-items:center}
+footer{color:var(--muted);font-size:.85rem;padding:10px 0 30px}
+</style>
+</head>
+<body>
+<a class="skip" href="#lab">Skip to virtual lab</a>
+
+<header class="topbar">
+  <div class="topbar-inner" style="max-width:1280px;margin:0 auto">
+    <div>
+      <h1>DSE Chemistry: Qualitative Analysis — Distinguishing Four Solutions</h1>
+      <p class="subtitle">Virtual practice based on SBA</p>
+    </div>
+    <div class="controls">
+      <fieldset class="mode">
+        <legend>Mode</legend>
+        <label><input type="radio" name="mode" value="worksheet"> Worksheet mode</label>
+        <label><input type="radio" name="mode" value="random"> Random challenge</label>
+      </fieldset>
+      <div class="ctl-buttons">
+        <button type="button" class="btn" id="clearRoundBtn">Clear this round</button>
+        <button type="button" class="btn" id="newRoundBtn">Start new round</button>
+      </div>
+      <label class="rm"><input type="checkbox" id="reduceMotionChk"> Reduce motion</label>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="banner" role="note"><strong>Virtual learning tool only.</strong> This page simulates observations for practice. Real practical work must be carried out in a school laboratory under your teacher’s supervision.</p>
+  <p id="roundInfo" class="round-info"></p>
+  <p id="storageWarn" class="warn-box" hidden>Your browser is blocking local storage, so progress will not be saved if you refresh the page.</p>
+
+  <!-- ========== 1. TASK & SAFETY ========== -->
+  <section class="card" id="task" aria-labelledby="taskH">
+    <h2 id="taskH">1. Task and safety</h2>
+    <div class="task-grid">
+      <div>
+        <h3>Aim</h3>
+        <p>Four reagent bottles, labelled <b>A</b>, <b>B</b>, <b>C</b> and <b>D</b>, each contain one of these colourless solutions. Mix them in pairs, record your observations, and use the evidence to work out which solution is in each bottle.</p>
+        <ul id="subList"></ul>
+        <h3>Procedure</h3>
+        <ol>
+          <li>For each test, take 2 cm<sup>3</sup> of each of two different solutions and mix them in a clean test tube.</li>
+          <li>Shake the test tube gently (or stir with a glass rod) to mix.</li>
+          <li>Observe carefully and record your observation straight after each test.</li>
+          <li>Complete all six pairs: A+B, A+C, A+D, B+C, B+D, C+D.</li>
+        </ol>
+      </div>
+      <div>
+        <h3>Safety reminders (for real laboratory work)</h3>
+        <ul>
+          <li>Wear safety glasses and protective gloves.</li>
+          <li>Avoid skin contact with all chemicals. Silver nitrate solution stains skin and clothes.</li>
+          <li><b>Never smell a gas directly.</b> Any gas or product formed may be harmful.</li>
+          <li>Make sure the laboratory is well ventilated.</li>
+          <li>If you spill a chemical on your skin or clothes, wash it off at once with plenty of water and report it to your teacher.</li>
+          <li>Keep droppers clean. Hold the dropper just above the mouth of the test tube and do not let the tip touch anything except the reagent.</li>
+          <li>Dispose of waste as your teacher tells you, into the correct labelled waste bottles.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ack" id="ackArea">
+      <label><input type="checkbox" id="ackChk"> I have read the safety reminders.</label>
+      <button type="button" class="btn primary" id="startLabBtn" disabled>Start the virtual lab</button>
+    </div>
+    <p id="ackDone" class="ok-box small" hidden>✓ Reminders read. <span class="muted">(This only records that you read them. It does <b>not</b> check or confirm how safely you work in a real laboratory.)</span></p>
+  </section>
+
+  <div class="lab-grid">
+    <!-- ========== 2. VIRTUAL LAB ========== -->
+    <section class="card" id="lab" aria-labelledby="labH" tabindex="-1">
+      <h2 id="labH">2. Virtual lab</h2>
+      <p id="labLock" class="warn-box lock">Read the safety reminders in Section 1, then press <b>Start the virtual lab</b>.</p>
+      <p class="muted small">Choose two different bottles (click, tap, or use Tab + Enter). All four bottles look the same: colourless solutions.</p>
+      <div class="bottles" id="bottles" role="group" aria-label="Reagent bottles A to D"></div>
+      <p id="selInfo" class="small" aria-live="polite"></p>
+      <div class="lab-actions">
+        <button type="button" class="btn primary" id="mixBtn" disabled>Take 2 cm³ of each and mix</button>
+        <button type="button" class="btn" id="clearSelBtn" disabled>Clear selection</button>
+      </div>
+      <div class="viewer">
+        <svg id="tubeSvg" viewBox="0 -70 240 370" role="img" aria-labelledby="tubeTitle">
+          <title id="tubeTitle">Test tube used for the current test</title>
+          <defs>
+            <clipPath id="tubeClip"><path d="M93,22 L93,240 A27,27 0 0 0 147,240 L147,22 Z"/></clipPath>
+          </defs>
+          <g id="dropper" style="opacity:0">
+            <rect x="110" y="-66" width="20" height="26" rx="8" fill="#6b7682"/>
+            <rect x="116" y="-41" width="8" height="53" rx="2" fill="rgba(215,232,250,.55)" stroke="#cfe3f5" stroke-width="1"/>
+            <text id="dropLabel" x="140" y="-46" fill="#fff" font-size="15" font-weight="700"></text>
+            <g id="dropSlot"></g>
+          </g>
+          <g id="tubeGroup">
+            <g clip-path="url(#tubeClip)">
+              <rect id="liquid" class="liq" x="88" y="150" width="64" height="122" fill="rgba(175,212,250,.30)" style="transform:scaleY(0)"/>
+              <rect id="cloud" class="liq" x="88" y="150" width="64" height="122" fill="#ffffff" style="transform:scaleY(0);opacity:0"/>
+              <g id="fx"></g>
+            </g>
+            <path d="M92,22 L92,240 A28,28 0 0 0 148,240 L148,22" fill="none" stroke="#d6e8f8" stroke-width="3"/>
+            <path d="M86,22 L98,22 M142,22 L154,22" stroke="#d6e8f8" stroke-width="3" stroke-linecap="round"/>
+            <text id="tubeNo" x="120" y="292" text-anchor="middle" fill="#cfd9e4" font-size="15"></text>
+          </g>
+        </svg>
+        <div class="vtext">
+          <div class="tube-label" id="tubeLabel"></div>
+          <p id="caption" aria-live="polite"></p>
+          <button type="button" class="btn small" id="goRecordBtn" hidden>Record this observation →</button>
+        </div>
+      </div>
+      <h3 style="margin-top:12px">Test log <span class="muted small">(newest first: view any earlier result)</span></h3>
+      <ul class="log" id="log"></ul>
+    </section>
+
+    <!-- ========== 3. RECORDS ========== -->
+    <section class="card" id="records" aria-labelledby="recH">
+      <h2 id="recH">3. Observation record</h2>
+      <div class="progress">
+        <span id="progTests"></span>
+        <progress id="progBar" max="6" value="0" aria-label="Tests completed"></progress>
+        <span id="progRecs" class="muted"></span>
+      </div>
+      <p class="muted small">For each test, first choose the category that matches what you saw, then write a short description in English.</p>
+      <div id="recList"></div>
+      <div class="phrases">
+        <b>Writing observations in English</b>
+        <ul>
+          <li>A white precipitate forms.</li>
+          <li>A greyish-yellow precipitate forms.</li>
+          <li>Effervescence occurs. / Colourless gas bubbles are given off.</li>
+          <li>No observable change.</li>
+        </ul>
+        <span class="muted small">Write only what you <b>see</b>. Names of substances (e.g. “CO<sub>2</sub> is formed”, “AgCl forms”) are <b>inferences</b>, not observations. Write “No observable change” rather than “no reaction”.</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ========== 4. DEDUCTION + 5. HINTS ========== -->
+  <section class="card" id="deduce" aria-labelledby="dedH">
+    <h2 id="dedH">4. Identify A, B, C and D</h2>
+    <div class="deduce-grid">
+      <div>
+        <p class="small">Each of the four solutions is used <b>exactly once</b>.</p>
+        <div class="answers" id="answers"></div>
+        <p id="dupMsg" class="err-box small" hidden role="alert"></p>
+        <label for="reasoning" style="margin-top:8px">Explain how you worked it out (in English)</label>
+        <textarea id="reasoning" maxlength="3000" placeholder="Use your observations step by step: which pair gave effervescence, what this suggests, how you told the remaining solutions apart…"></textarea>
+        <div class="submit-row">
+          <button type="button" class="btn primary" id="submitBtn">Submit answers</button>
+          <span id="submitMsg" class="small" role="status"></span>
+        </div>
+      </div>
+      <div class="hints" aria-labelledby="hintH">
+        <h3 id="hintH">5. Hints <span class="muted small">(unlock one level at a time)</span></h3>
+        <p class="muted small">Try on your own first. Each hint is based on the tests you have done so far.</p>
+        <div id="hintList" aria-live="polite"></div>
+        <button type="button" class="btn" id="hintBtn">Show hint 1 of 3</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEEDBACK (generated only after submission) ========== -->
+  <section class="card" id="feedback" hidden tabindex="-1" aria-labelledby="fbH"></section>
+
+  <!-- ========== TEACHER NOTES ========== -->
+  <section class="card" id="teacher">
+    <details>
+      <summary>Teacher notes: simulation model and its limits</summary>
+      <div id="teacherBody"></div>
+      <p><button type="button" class="btn small" id="selfCheckBtn">Run built-in consistency check</button></p>
+      <div id="selfCheckOut" class="small" aria-live="polite"></div>
+    </details>
+  </section>
+
+  <footer>Web practice tool. Scores shown here are practice scores only and are not official SBA marks.</footer>
+</div>
+
+<dialog id="confirmDlg" aria-labelledby="dlgMsg">
+  <form method="dialog">
+    <p id="dlgMsg"></p>
+    <menu>
+      <button type="submit" class="btn" value="cancel" id="dlgCancel">Cancel</button>
+      <button type="submit" class="btn primary" value="ok" id="dlgOk">OK</button>
+    </menu>
+  </form>
+</dialog>
+<div id="sr" class="sr-only" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* =====================================================================
+   0. HELPERS
+   ===================================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+/* chem(): formats trusted strings only. "SO4^{2-}" → stacked sub/sup; "Ag^{+}" → sup; "H2O" → sub. */
+function fmtCharge(c){ return c.replace(/-/g,'−'); }
+function chem(s){
+  return s
+    .replace(/([A-Za-z\)])(\d+)\^\{([^}]+)\}/g, (m,a,d,c) => a+'<span class="ss"><sup>'+fmtCharge(c)+'</sup><sub>'+d+'</sub></span>')
+    .replace(/\^\{([^}]+)\}/g, (m,c) => '<sup>'+fmtCharge(c)+'</sup>')
+    .replace(/([A-Za-z\)])(\d+)/g, '$1<sub>$2</sub>');
+}
+function announce(t){ const sr=$('#sr'); sr.textContent=''; setTimeout(()=>{ sr.textContent=t; },30); }
+function rnd(n){ if(window.crypto && crypto.getRandomValues){ const a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%n; } return Math.floor(Math.random()*n); }
+
+/* =====================================================================
+   1. CHEMISTRY DATA (edit here to change the model)
+   ===================================================================== */
+const CHEM = {
+  SUB_IDS: ['AgNO3','MgSO4','Na2CO3','HCl'],
+  SUBSTANCES: {
+    AgNO3:  {formula:'AgNO3(aq)',  option:'AgNO₃(aq)',  name:'silver nitrate solution',     conc:'0.2 mol dm^{-3}'},
+    MgSO4:  {formula:'MgSO4(aq)',  option:'MgSO₄(aq)',  name:'magnesium sulphate solution', conc:'1 mol dm^{-3}'},
+    Na2CO3: {formula:'Na2CO3(aq)', option:'Na₂CO₃(aq)', name:'sodium carbonate solution',   conc:'1 mol dm^{-3}'},
+    HCl:    {formula:'HCl(aq)',    option:'HCl(aq)',    name:'dilute hydrochloric acid',    conc:'1 mol dm^{-3}'}
+  },
+  CAT_ORDER: ['white_ppt','grey_ppt','gas','none'],
+  CATEGORIES: {
+    white_ppt: {label:'White precipitate',           zh:'白色沉澱',   model:'A white precipitate forms.'},
+    grey_ppt:  {label:'Greyish-yellow precipitate',  zh:'灰黃色沉澱', model:'A greyish-yellow precipitate forms.'},
+    gas:       {label:'Gas bubbles (effervescence)', zh:'有氣泡',     model:'Effervescence occurs.'},
+    none:      {label:'No observable change',        zh:'沒有可見變化', model:'No observable change.'}
+  },
+  /* What the student "sees". Must never name a substance. */
+  VISUALS: {
+    white_ppt: {colour:'#f3f3f0', text:'Tiny <b>white</b> solid particles appear and the mixture turns cloudy. Some of the solid slowly settles at the bottom of the tube. No bubbles are seen.'},
+    grey_ppt:  {colour:'#c8bb84', text:'Tiny <b>greyish-yellow</b> solid particles appear and the mixture turns cloudy. Some of the solid slowly settles at the bottom of the tube. No bubbles are seen.'},
+    gas:       {text:'Many <b>colourless gas bubbles</b> form and rise quickly through the liquid (fizzing). No solid appears; the liquid stays colourless.'},
+    none:      {text:'The mixture stays <b>colourless and clear</b>. No solid particles and no gas bubbles are seen.'}
+  },
+  /* Keys are the two substance ids sorted alphabetically and joined by "+". */
+  REACTIONS: {
+    'AgNO3+HCl':    {category:'white_ppt', alt:[], equation:'Ag^{+}(aq) + Cl^{-}(aq) → AgCl(s)',
+                     inference:'Silver ions and chloride ions form insoluble silver chloride, AgCl(s).'},
+    'AgNO3+MgSO4':  {category:'none', alt:['white_ppt'], equation:null,
+                     possible:'2Ag^{+}(aq) + SO4^{2-}(aq) → Ag2SO4(s) (only if crystals form)',
+                     altNote:'Also accepted: a small amount of colourless crystals of Ag2SO4(s), which is only slightly soluble (depends on concentration and conditions).',
+                     inference:'In this model no visible change occurs. Ag2SO4 is only slightly soluble, so a small amount of crystals may appear under some conditions.'},
+    'AgNO3+Na2CO3': {category:'grey_ppt', alt:[], equation:'2Ag^{+}(aq) + CO3^{2-}(aq) → Ag2CO3(s)',
+                     inference:'Silver ions and carbonate ions form insoluble silver carbonate, Ag2CO3(s).'},
+    'HCl+MgSO4':    {category:'none', alt:[], equation:null,
+                     inference:'No reaction is expected; all the ions stay in solution.'},
+    'HCl+Na2CO3':   {category:'gas', alt:[], equation:'CO3^{2-}(aq) + 2H^{+}(aq) → CO2(g) + H2O(l)',
+                     inference:'An acid reacting with a carbonate gives carbon dioxide gas. (Bubbles alone do not confirm CO2: a limewater test would be needed.)'},
+    'MgSO4+Na2CO3': {category:'white_ppt', alt:[], equation:'Mg^{2+}(aq) + CO3^{2-}(aq) → MgCO3(s)',
+                     inference:'Magnesium ions and carbonate ions form an insoluble white solid, written as MgCO3(s) at DSE level.'}
+  },
+  key(a,b){ return [a,b].sort().join('+'); },
+  react(a,b){ return this.REACTIONS[this.key(a,b)]; }
+};
+
+/* =====================================================================
+   2. ROUND / ASSIGNMENT / STORAGE
+   ===================================================================== */
+const LABELS = ['A','B','C','D'];
+const PAIRS = ['AB','AC','AD','BC','BD','CD'];
+const WORKSHEET_ASSIGNMENT = {A:'Na2CO3', B:'MgSO4', C:'HCl', D:'AgNO3'};
+const STORE_KEY = 'dseQA4Sol.v1';
+const pk = (a,b) => [a,b].sort().join('');
+const pairText = p => p[0]+' + '+p[1];
+
+const ROUND = {
+  /* light obfuscation only: stops casual peeking, NOT secure */
+  encode(asg, rid){
+    const digits = LABELS.map(l => (CHEM.SUB_IDS.indexOf(asg[l]) + 7) % 10).join('');
+    return btoa('qa|'+rid+'|'+digits);
+  },
+  decode(code, rid){
+    try{
+      const parts = atob(code).split('|');
+      if(parts.length!==3 || parts[0]!=='qa' || parts[1]!==rid || !/^\d{4}$/.test(parts[2])) return null;
+      const idx = parts[2].split('').map(c => (+c + 3) % 10);
+      if(new Set(idx).size!==4 || idx.some(i => i<0 || i>3)) return null;
+      const a = {}; LABELS.forEach((l,i) => a[l] = CHEM.SUB_IDS[idx[i]]); return a;
+    }catch(e){ return null; }
+  },
+  randomAssignment(){
+    const arr = CHEM.SUB_IDS.slice();
+    for(let i=arr.length-1;i>0;i--){ const j=rnd(i+1); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+    const a={}; LABELS.forEach((l,i)=>a[l]=arr[i]); return a;
+  },
+  emptyRecords(){ const r={}; PAIRS.forEach(p=>r[p]={cat:'',text:''}); return r; },
+  fresh(mode){
+    const rid = Date.now().toString(36) + rnd(1e6).toString(36);
+    const asg = mode==='worksheet' ? Object.assign({}, WORKSHEET_ASSIGNMENT) : this.randomAssignment();
+    return { roundId:rid, code:this.encode(asg,rid), startedAt:Date.now(), tubeCount:0, tests:{}, log:[],
+             records:this.emptyRecords(), answers:{A:'',B:'',C:'',D:''}, reasoning:'', hintLevel:0,
+             submitted:false, submittedAt:null };
+  },
+  resetProgress(r){ r.tubeCount=0; r.tests={}; r.log=[]; r.records=this.emptyRecords(); r.answers={A:'',B:'',C:'',D:''};
+                    r.reasoning=''; r.hintLevel=0; r.submitted=false; r.submittedAt=null; }
+};
+
+let state = null, ASG = null, storageOK = true;
+const R = () => state.round;
+
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch(e){ storageOK=false; $('#storageWarn').hidden=false; }
+}
+function normalise(s){
+  const r = s.round;
+  r.tests = r.tests && typeof r.tests==='object' ? r.tests : {};
+  r.log = Array.isArray(r.log) ? r.log.filter(e=>e && PAIRS.includes(e.pair)) : [];
+  const recs = ROUND.emptyRecords();
+  PAIRS.forEach(p=>{ const x=r.records && r.records[p]; if(x){ recs[p].cat = CHEM.CATEGORIES[x.cat] ? x.cat : ''; recs[p].text = typeof x.text==='string'?x.text:''; } });
+  r.records = recs;
+  const ans = {A:'',B:'',C:'',D:''};
+  LABELS.forEach(l=>{ const v=r.answers && r.answers[l]; if(CHEM.SUBSTANCES[v]) ans[l]=v; });
+  r.answers = ans;
+  r.reasoning = typeof r.reasoning==='string' ? r.reasoning : '';
+  r.hintLevel = Math.max(0, Math.min(3, r.hintLevel|0));
+  r.tubeCount = r.tubeCount|0;
+  r.submitted = !!r.submitted;
+  s.safetyAck = !!s.safetyAck;
+  if(typeof s.reduceMotion!=='boolean') s.reduceMotion = null;
+  return s;
+}
+function load(){
+  let s = null;
+  try{ const raw = localStorage.getItem(STORE_KEY); if(raw) s = JSON.parse(raw); }
+  catch(e){ storageOK=false; }
+  if(s && s.v===1 && s.round && (s.mode==='worksheet' || s.mode==='random')){
+    const a = ROUND.decode(s.round.code, s.round.roundId);
+    const wsOK = s.mode!=='worksheet' || LABELS.every(l => a && a[l]===WORKSHEET_ASSIGNMENT[l]);
+    if(a && wsOK){ state = normalise(s); ASG = a; return; }
+  }
+  state = {v:1, mode:'worksheet', safetyAck:false, reduceMotion:null, round:ROUND.fresh('worksheet')};
+  ASG = ROUND.decode(state.round.code, state.round.roundId);
+  save();
+}
+
+/* =====================================================================
+   3. LOGIC: results, solver, hints, grading
+   ===================================================================== */
+function resultForAsg(asg, p){ return CHEM.react(asg[p[0]], asg[p[1]]); }
+function resultFor(p){ return resultForAsg(ASG, p); }
+function seen(p){ return !!(R().tests[p] && R().tests[p].count>0); }
+const isPpt = c => c==='white_ppt' || c==='grey_ppt';
+
+/* Generic deduction from observations (works for any assignment). */
+function solve(obs){
+  const gas = PAIRS.filter(p => obs(p)==='gas');
+  if(gas.length!==1) return null;
+  const x = gas[0][0], y = gas[0][1];
+  const others = LABELS.filter(l => l!==x && l!==y);
+  const cnt = l => others.filter(o => isPpt(obs(pk(l,o)))).length;
+  let carb, acid;
+  if(cnt(x)===2 && cnt(y)===1){ carb=x; acid=y; }
+  else if(cnt(y)===2 && cnt(x)===1){ carb=y; acid=x; }
+  else return null;
+  const ag = others.filter(o => isPpt(obs(pk(acid,o))));
+  if(ag.length!==1) return null;
+  const silver = ag[0], mg = others.find(o => o!==silver);
+  const map = {}; map[carb]='Na2CO3'; map[acid]='HCl'; map[silver]='AgNO3'; map[mg]='MgSO4';
+  return {x, y, others, carb, acid, silver, mg, map};
+}
+
+const Logic = {
+  hint(level){
+    const gas = PAIRS.find(p => resultFor(p).category==='gas');
+    const x = gas[0], y = gas[1];
+    const others = LABELS.filter(l => l!==x && l!==y);
+    const P = others[0], Q = others[1];
+    const done = PAIRS.filter(seen).length;
+    if(level===1){
+      if(!seen(gas)) return chem(`Look out for <b>effervescence</b> (gas bubbles). Think about which two of AgNO3(aq), MgSO4(aq), Na2CO3(aq) and HCl(aq) could react to give a gas. You have completed ${done} / 6 tests. Keep testing until you find the pair that fizzes.`);
+      return chem(`You saw gas bubbles when you mixed <b>${x} + ${y}</b>. That is an <em>observation</em>. Now make an <em>inference</em>: which two of the four possible solutions react to give a gas? ${x} and ${y} must be those two, but you cannot yet tell which is which.`);
+    }
+    if(level===2){
+      if(!seen(gas)) return 'First find the pair that gives effervescence (see Hint 1). This hint will update after you have done that test.';
+      const need = [pk(x,P), pk(x,Q), pk(y,P), pk(y,Q)];
+      const missing = need.filter(p => !seen(p));
+      return chem(`One of ${x} and ${y} is the carbonate and the other is the acid. Count the precipitates in your records for ${x} + ${P}, ${x} + ${Q}, ${y} + ${P} and ${y} + ${Q}. Which of ${x} / ${y} forms a precipitate with <b>both</b> of the other two solutions? Think about solubility: most carbonates (for example those of Mg^{2+} and Ag^{+}) are insoluble, but most chlorides are soluble. AgCl is the important exception here.`)
+        + (missing.length ? `<br><span class="muted">Tests you still need for this step: ${missing.map(pairText).join(', ')}.</span>` : '');
+    }
+    return chem(`The other two bottles, <b>${P}</b> and <b>${Q}</b>, contain AgNO3(aq) and MgSO4(aq) in some order. Look at their results with the bottle you identified as the acid: which one gives a <b>white</b> precipitate? (Which metal ion forms an insoluble chloride?) Then compare the colours of the precipitates with the carbonate: in this task the <b>greyish-yellow</b> one comes from silver carbonate and the <b>white</b> one from magnesium carbonate. Identify the last bottle by elimination.`);
+  },
+
+  textNotes(text, ref){
+    const t = (text||'').trim(); const notes = [];
+    if(!t){ notes.push('No written description.'); }
+    else{
+      if(/\b(CO2|CO₂|carbon dioxide|AgCl|Ag2CO3|MgCO3|Ag2SO4|silver|magnesium|sodium|chloride|carbonate|sulphate|sulfate|nitrate|hydrogen)\b/i.test(t))
+        notes.push('Contains substance names: these are inferences, so keep them out of the observation.');
+      if(/no reaction/i.test(t)) notes.push('“No reaction” is an inference; write “No observable change”.');
+      const kw = {
+        white_ppt: /white/i.test(t) && /precipitate|ppt|solid|cloudy|milky|suspension/i.test(t),
+        grey_ppt: /(grey|gray|yellow)/i.test(t) && /precipitate|ppt|solid|cloudy|suspension/i.test(t),
+        gas: /efferves|bubbl|fizz|\bgas\b/i.test(t),
+        none: /no (observable |visible |obvious )?change|nothing (happens|is seen|observed)|remains? (colourless|clear)|stays? (colourless|clear)/i.test(t)
+      };
+      if(kw[ref.category]) notes.push('Wording matches the reference observation.');
+      else if(ref.alt.some(a => kw[a])) notes.push('Wording matches an accepted alternative.');
+      else notes.push('Wording does not clearly match the reference observation. Compare it with the model sentence.');
+    }
+    return '<div class="muted small" style="margin-top:4px">Text check (preliminary): '+notes.map(esc).join(' ')+'</div>';
+  },
+
+  reasoningChecks(t){
+    const s = t || '';
+    const labelsUsed = new Set((s.match(/\b[ABCD]\b/g)||[])).size;
+    return [
+      {ok:/efferves|bubbl|fizz|\bgas\b/i.test(s), text:'Uses the effervescence (gas bubbles) observation'},
+      {ok:/(acid|HCl)/i.test(s) && /(carbonate|CO3|Na2CO3)/i.test(s), text:'Links the gas to an acid reacting with a carbonate'},
+      {ok:/(two|2|both)[^.]{0,50}precipitat|precipitat[^.]{0,50}(two|2|both)/i.test(s), text:'Compares the number of precipitates formed'},
+      {ok:/AgCl|silver chloride|chloride/i.test(s), text:'Uses the white precipitate formed with the acid (AgCl)'},
+      {ok:/grey|gray|yellow|Ag2CO3|silver carbonate/i.test(s), text:'Uses the greyish-yellow precipitate (Ag₂CO₃)'},
+      {ok:/remain|left|last|eliminat|therefore|hence|thus|so\s/i.test(s), text:'Uses elimination or logical connectives (hence, therefore…)'},
+      {ok:labelsUsed>=3, text:'Refers to the bottle labels A–D in the explanation'}
+    ];
+  }
+};
+
+/* =====================================================================
+   4. ANIMATION (SVG)
+   ===================================================================== */
+const NS = 'http://www.w3.org/2000/svg';
+function randPt(y0, y1){
+  for(let k=0;k<60;k++){
+    const y = y0 + Math.random()*(y1-y0);
+    const half = y<=240 ? 23 : Math.sqrt(Math.max(0, 27*27-(y-240)*(y-240))) - 4;
+    if(half<2) continue;
+    return [120 + (Math.random()*2-1)*half, y];
+  }
+  return [120, y1-4];
+}
+const Anim = {
+  token:0, busy:false, e:{},
+  init(){
+    const q = id => document.getElementById(id);
+    this.e = {group:q('tubeGroup'), liqs:[q('liquid'),q('cloud')], cloud:q('cloud'), fx:q('fx'), dropper:q('dropper'),
+              dropLabel:q('dropLabel'), dropSlot:q('dropSlot'), tubeNo:q('tubeNo'), cap:q('caption'), tubeLabel:q('tubeLabel')};
+  },
+  reduced(){ return document.body.classList.contains('reduce-motion'); },
+  wait(ms){ const t=this.token; return new Promise(r => setTimeout(() => r(t===this.token), this.reduced()?0:ms)); },
+  cap(html){ this.e.cap.innerHTML = html; },
+  level(f, instant){
+    this.e.liqs.forEach(el => {
+      if(instant) el.style.transition='none';
+      el.style.transform = 'scaleY('+f+')';
+      if(instant){ void el.getBoundingClientRect(); el.style.transition=''; }
+    });
+  },
+  clear(){
+    this.e.fx.textContent=''; this.e.dropSlot.textContent='';
+    const c=this.e.cloud; c.style.transition='none'; c.style.opacity='0'; void c.getBoundingClientRect(); c.style.transition='';
+    this.level(0,true); this.e.group.classList.remove('shake'); this.e.dropper.style.opacity='0';
+  },
+  stop(){ this.token++; this.busy=false; },
+  idle(){
+    this.stop(); this.clear(); this.e.tubeNo.textContent='';
+    this.e.tubeLabel.textContent='No test in progress';
+    this.cap('Select two different bottles, then press <b>Take 2 cm³ of each and mix</b>. Each test uses a new, clean test tube.');
+  },
+  drip(){
+    this.e.dropSlot.textContent='';
+    const c = document.createElementNS(NS,'circle');
+    c.setAttribute('cx','120'); c.setAttribute('cy','16'); c.setAttribute('r','3');
+    c.setAttribute('fill','rgba(205,228,252,.95)'); c.setAttribute('class','drop');
+    this.e.dropSlot.appendChild(c);
+  },
+  shake(){ const g=this.e.group; g.classList.remove('shake'); void g.getBoundingClientRect(); g.classList.add('shake'); },
+  effect(cat, animated){
+    const fx = this.e.fx; fx.textContent='';
+    const mk = (attrs, cls, style) => {
+      const c = document.createElementNS(NS,'circle');
+      for(const k in attrs) c.setAttribute(k, attrs[k]);
+      if(cls) c.setAttribute('class', cls);
+      if(style) c.setAttribute('style', style);
+      fx.appendChild(c);
+    };
+    if(isPpt(cat)){
+      const col = CHEM.VISUALS[cat].colour, cl = this.e.cloud;
+      cl.setAttribute('fill', col);
+      if(!animated){ cl.style.transition='none'; }
+      cl.style.opacity = cat==='white_ppt' ? '0.24' : '0.30';
+      if(!animated){ void cl.getBoundingClientRect(); cl.style.transition=''; }
+      for(let i=0;i<85;i++){ const [x,y]=randPt(158,262);
+        mk({cx:x.toFixed(1), cy:y.toFixed(1), r:(0.9+Math.random()*1.3).toFixed(2), fill:col, stroke:'rgba(0,0,0,.35)', 'stroke-width':'0.4'},
+           animated?'particle':'', animated?('--d:'+(Math.random()*1.2).toFixed(2)+'s'):''); }
+      for(let i=0;i<65;i++){ const [x,y]=randPt(254,267);
+        mk({cx:x.toFixed(1), cy:y.toFixed(1), r:(1.2+Math.random()*1.3).toFixed(2), fill:col, stroke:'rgba(0,0,0,.35)', 'stroke-width':'0.4'},
+           animated?'particle':'', animated?('--d:'+(1.2+Math.random()*1.3).toFixed(2)+'s'):''); }
+    } else if(cat==='gas'){
+      const n = animated ? 34 : 22;
+      for(let i=0;i<n;i++){ const [x,y]=randPt(185,264);
+        mk({cx:x.toFixed(1), cy:y.toFixed(1), r:(1.4+Math.random()*2.2).toFixed(2), fill:'rgba(255,255,255,.14)', stroke:'#eaf4ff', 'stroke-width':'0.9'},
+           animated?'bubble':'', animated?('--h:'+(-(y-152)).toFixed(0)+'px;--d:'+(Math.random()*1.5).toFixed(2)+'s;--t:'+(1.1+Math.random()*0.9).toFixed(2)+'s'):''); }
+      for(let i=0;i<8;i++){ const y=160+Math.random()*85, x = i%2 ? 96+Math.random()*3 : 144-Math.random()*3;
+        mk({cx:x.toFixed(1), cy:y.toFixed(1), r:'1.3', fill:'rgba(255,255,255,.2)', stroke:'#eaf4ff', 'stroke-width':'0.7'}, '', ''); }
+    }
+  },
+  async play(first, second, cat, tube){
+    this.token++; this.busy=true;
+    this.clear();
+    this.e.tubeNo.textContent = '#'+tube;
+    this.e.tubeLabel.textContent = 'Clean test tube #'+tube;
+    this.cap('A new, clean test tube (#'+tube+') is used for this test.');
+    if(!await this.wait(600)) return false;
+    const steps = [[first,0.5],[second,1]];
+    for(const [lab,f] of steps){
+      this.e.dropLabel.textContent = lab;
+      this.e.dropper.style.opacity = '1';
+      this.drip();
+      this.cap('Adding 2 cm³ of solution <b>'+lab+'</b> (dropper held just above the mouth of the tube)…');
+      if(!await this.wait(350)) return false;
+      this.level(f);
+      if(!await this.wait(950)) return false;
+    }
+    this.e.dropper.style.opacity='0';
+    this.cap('Shaking the test tube gently to mix…');
+    this.shake();
+    if(!await this.wait(1300)) return false;
+    this.effect(cat, !this.reduced());
+    if(!await this.wait(250)) return false;
+    this.busy=false;
+    return true;
+  },
+  showStatic(cat, tube){
+    this.stop(); this.clear();
+    this.e.tubeNo.textContent = '#'+tube;
+    this.e.tubeLabel.textContent = 'Test tube #'+tube+' (earlier result)';
+    this.level(1,true);
+    this.effect(cat,false);
+  }
+};
+
+/* =====================================================================
+   5. UI
+   ===================================================================== */
+let selected = [];
+
+function bottleSVG(l){
+  return `<svg viewBox="0 0 60 90" aria-hidden="true" focusable="false">
+    <rect x="22" y="2" width="16" height="10" rx="2" fill="#3b4a5a"/>
+    <rect x="25" y="12" width="10" height="10" fill="#e3ebf3" stroke="#8aa0b4"/>
+    <path d="M10,30 Q10,22 25,22 L35,22 Q50,22 50,30 L50,82 Q50,88 44,88 L16,88 Q10,88 10,82 Z" fill="#eef4f9" stroke="#8aa0b4" stroke-width="1.5"/>
+    <rect x="12" y="42" width="36" height="44" rx="3" fill="rgba(170,210,255,.35)"/>
+    <rect x="16" y="50" width="28" height="24" rx="3" fill="#fff" stroke="#5a6776"/>
+    <text x="30" y="68" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2532">${l}</text></svg>`;
+}
+
+function confirmBox(msg, okText){
+  const d = $('#confirmDlg');
+  if(typeof d.showModal !== 'function') return Promise.resolve(window.confirm(msg));
+  $('#dlgMsg').textContent = msg; $('#dlgOk').textContent = okText || 'OK';
+  return new Promise(res => {
+    const onClose = () => { d.removeEventListener('close', onClose); res(d.returnValue==='ok'); };
+    d.addEventListener('close', onClose);
+    d.returnValue = '';
+    d.showModal();
+    $('#dlgCancel').focus();
+  });
+}
+
+function buildStatic(){
+  $('#subList').innerHTML = ['AgNO3','MgSO4','Na2CO3','HCl'].map(id => {
+    const s = CHEM.SUBSTANCES[id];
+    return '<li>'+chem(s.formula+' ('+s.conc+')')+' <span class="muted">— '+s.name+'</span></li>';
+  }).join('');
+
+  const b = $('#bottles');
+  b.innerHTML = LABELS.map(l => `<button type="button" class="bottle" data-l="${l}" aria-pressed="false">
+      <span class="order" aria-hidden="true"></span>${bottleSVG(l)}<span class="bname">Bottle ${l}</span><span class="bdesc">colourless solution</span></button>`).join('');
+  b.addEventListener('click', e => { const btn = e.target.closest('.bottle'); if(btn && !btn.disabled) toggleBottle(btn.dataset.l); });
+
+  const recList = $('#recList');
+  recList.innerHTML = PAIRS.map(p => `
+    <div class="rec todo" id="rec-${p}">
+      <div class="rec-head">
+        <h3 class="rec-title">${pairText(p)}</h3>
+        <span class="badge todo" data-role="badge"></span>
+        <span class="rec-actions">
+          <button type="button" class="btn small" data-role="pick">Select this pair</button>
+          <button type="button" class="btn small" data-role="view">View result</button>
+        </span>
+      </div>
+      <div class="rec-grid">
+        <div><label for="cat-${p}">Observation category</label>
+          <select id="cat-${p}" data-role="cat">
+            <option value="">— choose —</option>
+            ${CHEM.CAT_ORDER.map(c => `<option value="${c}">${CHEM.CATEGORIES[c].label} (${CHEM.CATEGORIES[c].zh})</option>`).join('')}
+          </select></div>
+        <div><label for="txt-${p}">Written observation (English)</label>
+          <div class="txt-row"><input id="txt-${p}" type="text" data-role="txt" maxlength="300" autocomplete="off" placeholder="Describe only what you see…">
+          <button type="button" class="btn small" data-role="phrase" title="Insert the model sentence for the category you chose">Insert model phrase</button></div>
+          <p class="tip" data-role="tip" hidden></p></div>
+      </div>
+      <p class="muted small" data-role="note"></p>
+    </div>`).join('');
+
+  PAIRS.forEach(p => {
+    const div = $('#rec-'+p);
+    const catSel = div.querySelector('[data-role=cat]'), txt = div.querySelector('[data-role=txt]');
+    catSel.addEventListener('change', () => { if(R().submitted) return; R().records[p].cat = catSel.value; save(); renderRecords(); renderProgress(); });
+    txt.addEventListener('input', () => { if(R().submitted) return; R().records[p].text = txt.value; save(); updateTip(p); });
+    div.querySelector('[data-role=phrase]').addEventListener('click', () => {
+      const rec = R().records[p]; if(!rec.cat || R().submitted) return;
+      const phrase = CHEM.CATEGORIES[rec.cat].model;
+      rec.text = rec.text.trim() ? (rec.text.trim()+' '+phrase) : phrase;
+      txt.value = rec.text; save(); updateTip(p); txt.focus();
+    });
+    div.querySelector('[data-role=pick]').addEventListener('click', () => {
+      if(!state.safetyAck || Anim.busy) return;
+      selected = [p[0], p[1]]; renderBottles();
+      $('#mixBtn').scrollIntoView({block:'center'}); $('#mixBtn').focus();
+      announce('Bottles '+p[0]+' and '+p[1]+' selected.');
+    });
+    div.querySelector('[data-role=view]').addEventListener('click', () => viewPair(p));
+  });
+
+  $('#answers').innerHTML = LABELS.map(l => `<div><label for="ans-${l}">Bottle ${l}</label>
+    <select id="ans-${l}" data-l="${l}"><option value="">— choose —</option>
+    ${CHEM.SUB_IDS.map(id => `<option value="${id}">${CHEM.SUBSTANCES[id].option}</option>`).join('')}</select></div>`).join('');
+  LABELS.forEach(l => $('#ans-'+l).addEventListener('change', e => {
+    if(R().submitted) return; R().answers[l] = e.target.value; save(); renderAnswers();
+  }));
+  $('#reasoning').addEventListener('input', e => { if(R().submitted) return; R().reasoning = e.target.value; save(); });
+
+  $('#teacherBody').innerHTML = teacherNotesHTML();
+}
+
+function toggleBottle(l){
+  if(!state.safetyAck || Anim.busy) return;
+  const i = selected.indexOf(l);
+  if(i>=0) selected.splice(i,1);
+  else if(selected.length<2) selected.push(l);
+  else selected = [selected[0], l];
+  renderBottles();
+}
+
+function renderBottles(){
+  const locked = !state.safetyAck;
+  $('#labLock').hidden = !locked;
+  $$('.bottle').forEach(b => {
+    const l = b.dataset.l, i = selected.indexOf(l);
+    b.setAttribute('aria-pressed', i>=0 ? 'true' : 'false');
+    b.querySelector('.order').textContent = i===0 ? '1st' : (i===1 ? '2nd' : '');
+    b.setAttribute('aria-label', 'Bottle '+l+', colourless solution'+(i===0?', selected first':i===1?', selected second':''));
+    b.disabled = locked || Anim.busy;
+  });
+  $('#selInfo').innerHTML = selected.length===0 ? 'Selected: none. Choose two different bottles.'
+    : selected.length===1 ? 'Selected: <b>'+selected[0]+'</b> (1st). Choose one more bottle.'
+    : 'Selected: <b>'+selected[0]+'</b> (1st) and <b>'+selected[1]+'</b> (2nd). Ready to mix.';
+  $('#mixBtn').disabled = locked || Anim.busy || selected.length!==2;
+  $('#clearSelBtn').disabled = locked || Anim.busy || selected.length===0;
+}
+
+function updateTip(p){
+  const div = $('#rec-'+p), tip = div.querySelector('[data-role=tip]');
+  const t = R().records[p].text;
+  let msg = '';
+  if(/\b(CO2|CO₂|carbon dioxide|AgCl|Ag2CO3|MgCO3|Ag2SO4|silver|magnesium|sodium|chloride|carbonate|sulphate|sulfate|nitrate|hydrogen)\b/i.test(t))
+    msg = 'Tip: a substance name is an inference. In the observation, describe only what you see (colour, solid, bubbles…).';
+  else if(/no reaction/i.test(t)) msg = 'Tip: “no reaction” is an inference. Write “No observable change”.';
+  tip.textContent = msg; tip.hidden = !msg;
+}
+
+function renderRecords(){
+  const locked = R().submitted;
+  PAIRS.forEach(p => {
+    const div = $('#rec-'+p), done = seen(p), rec = R().records[p];
+    div.classList.toggle('done', done); div.classList.toggle('todo', !done);
+    const badge = div.querySelector('[data-role=badge]');
+    badge.textContent = done ? ('✓ Tested' + (R().tests[p].count>1 ? ' ×'+R().tests[p].count : '')) : '○ Not tested yet';
+    badge.className = 'badge ' + (done ? 'ok' : 'todo');
+    const catSel = div.querySelector('[data-role=cat]'), txt = div.querySelector('[data-role=txt]');
+    if(catSel.value !== rec.cat) catSel.value = rec.cat;
+    if(document.activeElement !== txt && txt.value !== rec.text) txt.value = rec.text;
+    catSel.disabled = txt.disabled = locked || !done;
+    div.querySelector('[data-role=phrase]').disabled = locked || !done || !rec.cat;
+    div.querySelector('[data-role=view]').disabled = !done || Anim.busy;
+    div.querySelector('[data-role=pick]').disabled = !state.safetyAck || Anim.busy;
+    div.querySelector('[data-role=note]').textContent = locked ? 'Submitted: records are locked.'
+      : !done ? 'Do this test first, then record what you see.'
+      : !rec.cat ? 'Choose a category, then describe what you saw.' : '';
+    updateTip(p);
+  });
+}
+
+function renderProgress(){
+  const n = PAIRS.filter(seen).length, m = PAIRS.filter(p => R().records[p].cat).length;
+  $('#progTests').innerHTML = 'Tests completed: <b>'+n+' / 6</b>';
+  $('#progBar').value = n;
+  $('#progRecs').textContent = 'Observations recorded: '+m+' / 6';
+}
+
+function renderLog(){
+  const log = R().log, ul = $('#log');
+  if(!log.length){ ul.innerHTML = '<li class="empty">No tests yet.</li>'; return; }
+  ul.innerHTML = log.map((e,i) => `<li><span>Tube #${e.tube}: <b>${e.first} + ${e.second}</b> <span class="muted small">(${e.first} added first)</span></span>
+    <button type="button" class="btn small" data-view="${i}" ${Anim.busy?'disabled':''}>View</button></li>`).join('');
+}
+
+function renderAnswers(){
+  const a = R().answers, locked = R().submitted;
+  const counts = {}; LABELS.forEach(l => { if(a[l]) counts[a[l]] = (counts[a[l]]||0)+1; });
+  const dups = Object.keys(counts).filter(k => counts[k]>1);
+  LABELS.forEach(l => {
+    const s = $('#ans-'+l);
+    if(s.value !== a[l]) s.value = a[l];
+    s.disabled = locked;
+    s.setAttribute('aria-invalid', a[l] && counts[a[l]]>1 ? 'true' : 'false');
+  });
+  const msg = $('#dupMsg');
+  if(dups.length){
+    msg.hidden = false;
+    msg.innerHTML = dups.map(d => chem(CHEM.SUBSTANCES[d].formula)+' is chosen for '+LABELS.filter(l => a[l]===d).join(' and ')).join('; ') + '. Each solution can be used only once.';
+  } else msg.hidden = true;
+  const r = $('#reasoning');
+  if(document.activeElement !== r && r.value !== R().reasoning) r.value = R().reasoning;
+  r.disabled = locked;
+  $('#submitBtn').disabled = locked;
+  if(locked) $('#submitMsg').innerHTML = '<span class="tag ok">✓ Submitted</span> Your feedback is shown below. Start a new round to try again.';
+}
+
+function renderHints(){
+  const lv = R().hintLevel, list = $('#hintList');
+  let html = '';
+  for(let i=1;i<=lv;i++) html += '<div class="hint"><div class="hl">Hint '+i+'</div>'+Logic.hint(i)+'</div>';
+  list.innerHTML = html;
+  const btn = $('#hintBtn');
+  if(lv>=3){ btn.textContent = 'All hints shown'; btn.disabled = true; }
+  else { btn.textContent = 'Show hint '+(lv+1)+' of 3'; btn.disabled = false; }
+}
+
+function renderHeader(){
+  $$('input[name=mode]').forEach(r => r.checked = r.value===state.mode);
+  const d = new Date(R().startedAt);
+  $('#roundInfo').textContent = 'Mode: ' + (state.mode==='worksheet' ? 'Worksheet mode (fixed set, as used in the printed worksheet)' : 'Random challenge (identities randomly assigned for this round)')
+    + ' · Round started ' + d.toLocaleString('en-GB', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+  $('#ackChk').checked = state.safetyAck;
+  $('#ackArea').hidden = state.safetyAck;
+  $('#ackDone').hidden = !state.safetyAck;
+  $('#startLabBtn').disabled = !$('#ackChk').checked;
+  $('#reduceMotionChk').checked = document.body.classList.contains('reduce-motion');
+  $('#storageWarn').hidden = storageOK;
+}
+
+function renderAll(){
+  renderHeader(); renderBottles(); renderRecords(); renderProgress(); renderLog(); renderAnswers(); renderHints(); renderFeedback();
+}
+
+/* ---------- Lab actions ---------- */
+async function doMix(){
+  if(selected.length!==2 || Anim.busy || !state.safetyAck) return;
+  const [first, second] = selected;
+  const pair = pk(first, second);
+  const res = resultFor(pair);
+  const rid = R().roundId;
+  const tube = R().tubeCount + 1;
+  selected = [];
+  $('#goRecordBtn').hidden = true;
+  Anim.busy = true; renderBottles(); renderRecords(); renderLog();
+  const ok = await Anim.play(first, second, res.category, tube);
+  if(!ok || R().roundId !== rid || !state.round) { renderAll(); return; }
+  const r = R();
+  r.tubeCount = tube;
+  const prev = r.tests[pair] || {count:0};
+  r.tests[pair] = {count:prev.count+1, lastTube:tube};
+  r.log.unshift({pair, first, second, tube, t:Date.now()});
+  save();
+  Anim.cap('<b>Tube #'+tube+': '+first+' + '+second+'</b> (2 cm³ of each; '+first+' added first).<br>What you see: '+CHEM.VISUALS[res.category].text);
+  const go = $('#goRecordBtn'); go.hidden = false; go.dataset.pair = pair;
+  go.textContent = 'Record this observation for '+pairText(pair)+' →';
+  renderAll();
+  announce('Test '+pairText(pair)+' completed. Record your observation.');
+}
+
+function viewEntry(e){
+  if(Anim.busy || !e) return;
+  const cat = resultFor(e.pair).category;
+  Anim.showStatic(cat, e.tube);
+  Anim.cap('<b>Viewing earlier result. Tube #'+e.tube+': '+e.first+' + '+e.second+'</b> (2 cm³ of each).<br>What you saw: '+CHEM.VISUALS[cat].text);
+  const go = $('#goRecordBtn'); go.hidden = false; go.dataset.pair = e.pair; go.textContent = 'Go to record for '+pairText(e.pair)+' →';
+  renderBottles(); renderRecords(); renderLog();
+  if(window.innerWidth < 980) $('.viewer').scrollIntoView({block:'center'});
+}
+function viewPair(p){ viewEntry(R().log.find(e => e.pair===p)); }
+
+function goRecord(p){
+  const div = $('#rec-'+p); if(!div) return;
+  div.scrollIntoView({block:'center'});
+  div.classList.add('flash'); setTimeout(() => div.classList.remove('flash'), 1400);
+  const s = div.querySelector('[data-role=cat]'); if(!s.disabled) s.focus();
+}
+
+/* ---------- Round actions ---------- */
+function hasProgress(){
+  const r = R();
+  return r.log.length>0 || PAIRS.some(p => r.records[p].cat || r.records[p].text) || LABELS.some(l => r.answers[l]) || r.reasoning.trim() || r.hintLevel>0;
+}
+function startNewRound(mode){
+  Anim.stop();
+  state.mode = mode;
+  state.round = ROUND.fresh(mode);
+  ASG = ROUND.decode(state.round.code, state.round.roundId);
+  selected = []; save();
+  $('#goRecordBtn').hidden = true; $('#submitMsg').textContent = '';
+  Anim.idle(); renderAll();
+  announce('New round started.');
+}
+async function onNewRound(){
+  if(hasProgress()){
+    const msg = state.mode==='random'
+      ? 'Start a new round? All tests, records, answers and hints in this round will be cleared, and bottles A–D will get NEW random identities.'
+      : 'Start a new round? All tests, records, answers and hints in this round will be cleared. (Worksheet mode always uses the same fixed set.)';
+    if(!await confirmBox(msg, 'Start new round')) return;
+  }
+  startNewRound(state.mode);
+}
+async function onClearRound(){
+  if(!hasProgress()){ announce('Nothing to clear.'); return; }
+  if(!await confirmBox('Clear this round? All tests, records, answers, reasoning and hints will be deleted. The identities of A–D stay the same.', 'Clear round')) return;
+  Anim.stop(); ROUND.resetProgress(R()); selected = []; save();
+  $('#goRecordBtn').hidden = true; $('#submitMsg').textContent = '';
+  Anim.idle(); renderAll(); announce('Round cleared.');
+}
+async function onModeChange(newMode){
+  if(newMode === state.mode) return;
+  if(hasProgress()){
+    const ok = await confirmBox('Switch to '+(newMode==='random'?'Random challenge':'Worksheet mode')+'? This starts a new round and clears your current progress.', 'Switch mode');
+    if(!ok){ renderHeader(); return; }
+  }
+  startNewRound(newMode);
+}
+
+/* ---------- Submit ---------- */
+async function onSubmit(){
+  const r = R(), msg = $('#submitMsg');
+  if(r.submitted) return;
+  const blanks = LABELS.filter(l => !r.answers[l]);
+  if(blanks.length){ msg.innerHTML = '<span class="tag bad">!</span> Choose a solution for bottle '+blanks.join(', ')+'.'; $('#ans-'+blanks[0]).focus(); return; }
+  const vals = LABELS.map(l => r.answers[l]);
+  if(new Set(vals).size !== 4){ msg.innerHTML = '<span class="tag bad">!</span> Each solution must be used exactly once. Fix the duplicated choice first.'; renderAnswers(); $('#ans-'+LABELS.find(l => vals.filter(v => v===r.answers[l]).length>1)).focus(); return; }
+  const notTested = PAIRS.filter(p => !seen(p)), notRec = PAIRS.filter(p => !r.records[p].cat);
+  const warn = [];
+  if(notTested.length) warn.push(notTested.length+' test(s) not done ('+notTested.map(pairText).join(', ')+')');
+  if(notRec.length) warn.push(notRec.length+' observation(s) without a category');
+  if(!r.reasoning.trim()) warn.push('no written explanation');
+  if(warn.length){
+    if(!await confirmBox('Before you submit: '+warn.join('; ')+'. After submitting, your answers are locked. Submit anyway?', 'Submit anyway')) {
+      msg.innerHTML = '<span class="tag warn">i</span> Not submitted. Complete the remaining work first.'; return;
+    }
+  }
+  r.submitted = true; r.submittedAt = Date.now(); save();
+  renderAll();
+  const fb = $('#feedback'); fb.scrollIntoView({block:'start'}); fb.focus({preventScroll:true});
+  announce('Answers submitted. Feedback is shown.');
+}
+
+/* ---------- Feedback (only built after submission) ---------- */
+const tag = (cls, t) => '<span class="tag '+cls+'">'+t+'</span>';
+function renderFeedback(){
+  const fb = $('#feedback'), r = R();
+  if(!r.submitted){ fb.hidden = true; fb.innerHTML = ''; return; }
+  fb.hidden = false;
+  let idScore = 0, obsScore = 0;
+  const F = id => chem(CHEM.SUBSTANCES[id].formula);
+
+  const idRows = LABELS.map(l => {
+    const ans = r.answers[l], ok = ans === ASG[l]; if(ok) idScore++;
+    return '<tr><th scope="row">'+l+'</th><td>'+(ans?F(ans):'—')+'</td><td>'+F(ASG[l])+'</td><td>'+(ok?tag('ok','✓ Correct'):tag('bad','✗ Incorrect'))+'</td></tr>';
+  }).join('');
+
+  const obsRows = PAIRS.map(p => {
+    const ref = resultFor(p), rec = r.records[p];
+    let st;
+    if(!rec.cat) st = tag('bad','✗ Not recorded');
+    else if(rec.cat === ref.category){ st = tag('ok','✓ Matches'); obsScore++; }
+    else if(ref.alt.includes(rec.cat)){ st = tag('warn','≈ Accepted alternative'); obsScore++; }
+    else st = tag('bad','✗ Different');
+    return '<tr><th scope="row">'+pairText(p)+(seen(p)?'':'<br><span class="muted small">(not tested)</span>')+'</th>'
+      + '<td>'+(rec.cat?esc(CHEM.CATEGORIES[rec.cat].label):'—')+(rec.text?'<br><span class="muted">“'+esc(rec.text)+'”</span>':'')+'</td>'
+      + '<td>'+CHEM.CATEGORIES[ref.category].model+(ref.altNote?'<br><span class="muted small">'+chem(ref.altNote)+'</span>':'')+'</td>'
+      + '<td>'+st+Logic.textNotes(rec.text, ref)+'</td>'
+      + '<td><span class="small">'+F(ASG[p[0]])+' + '+F(ASG[p[1]])+'</span><br>'+chem(ref.inference)
+      + (ref.equation?'<div class="eq">'+chem(ref.equation)+'</div>':'')+'</td></tr>';
+  }).join('');
+
+  const checks = Logic.reasoningChecks(r.reasoning);
+  const total = idScore + obsScore;
+
+  fb.innerHTML = `
+    <h2 id="fbH">Feedback and worked solution</h2>
+    <p class="score">Web practice score: <b>${total} / 10</b> <span class="muted small">(identities ${idScore} / 4 + observation categories ${obsScore} / 6)</span></p>
+    <p class="muted small">This score is for practice on this web page only. It is <b>not</b> an official SBA mark. Your teacher assesses the real task using the official criteria, including your practical skills and safe practice, which this page cannot observe. Hints used: ${r.hintLevel} / 3.</p>
+
+    <h3>Identities of A–D</h3>
+    <div class="table-wrap"><table class="fb" style="min-width:420px"><thead><tr><th>Bottle</th><th>Your answer</th><th>Correct</th><th>Result</th></tr></thead><tbody>${idRows}</tbody></table></div>
+    ${idScore===4 ? '<p class="ok-box">✓ All four solutions identified correctly.</p>' : '<p class="warn-box">Some identities are incorrect. Work through the explanation below and compare it with your own reasoning.</p>'}
+
+    <h3>Your observations compared with the reference</h3>
+    <div class="table-wrap"><table class="fb"><thead><tr><th>Mixture</th><th>Your record</th><th>Reference observation</th><th>Check</th><th>Inference (after identification) and equation</th></tr></thead><tbody>${obsRows}</tbody></table></div>
+
+    <h3>Step-by-step deduction for this round</h3>
+    ${explanationHTML()}
+
+    <h3>Net ionic equations</h3>
+    <ul class="eq-list">
+      <li class="eq">${chem('Mg^{2+}(aq) + CO3^{2-}(aq) → MgCO3(s)')}</li>
+      <li class="eq">${chem('CO3^{2-}(aq) + 2H^{+}(aq) → CO2(g) + H2O(l)')}</li>
+      <li class="eq">${chem('2Ag^{+}(aq) + CO3^{2-}(aq) → Ag2CO3(s)')}</li>
+      <li class="eq">${chem('Ag^{+}(aq) + Cl^{-}(aq) → AgCl(s)')}</li>
+    </ul>
+    <p class="small muted">${chem('MgSO4(aq) + HCl(aq): no reaction expected. MgSO4(aq) + AgNO3(aq): no observable change in this model; if a small amount of crystals does form: 2Ag^{+}(aq) + SO4^{2-}(aq) → Ag2SO4(s).')}</p>
+
+    <h3>Observation vs inference</h3>
+    <div class="table-wrap"><table class="fb" style="min-width:480px"><thead><tr><th><span class="obs-tag">Observation</span> (what you see)</th><th><span class="inf-tag">Inference</span> (what you conclude)</th></tr></thead><tbody>
+      <tr><td>Effervescence occurs.</td><td>${chem('The gas is probably CO2, from an acid reacting with a carbonate. To confirm CO2, bubble the gas into limewater (it turns milky).')}</td></tr>
+      <tr><td>A white precipitate forms.</td><td>${chem('An insoluble solid formed, e.g. AgCl or MgCO3, depending on the solutions mixed.')}</td></tr>
+      <tr><td>A greyish-yellow precipitate forms.</td><td>${chem('In this task, consistent with Ag2CO3(s).')}</td></tr>
+      <tr><td>No observable change.</td><td>No insoluble product or gas is formed that can be seen; possibly no reaction.</td></tr>
+    </tbody></table></div>
+
+    <h3>Your explanation: preliminary keyword feedback</h3>
+    <p class="warn-box small"><b>Limitation:</b> this check only looks for keywords. It cannot judge whether your reasoning is logical or correct, and it may miss good answers written in other words. Ask your teacher for proper feedback.</p>
+    ${r.reasoning.trim() ? '<p class="small"><b>Your explanation:</b><br><span class="muted" style="white-space:pre-wrap">'+esc(r.reasoning)+'</span></p>' : '<p class="muted">No explanation was written.</p>'}
+    <ul>${checks.map(c => '<li>'+(c.ok?tag('ok','✓ Found'):tag('warn','○ Not found'))+' '+chem(c.text)+'</li>').join('')}</ul>
+
+    <h3>Model limitations</h3>
+    <ul class="notes-list small">
+      <li>${chem('The MgSO4 + AgNO3 result depends on concentration and conditions: a small amount of slightly soluble Ag2SO4 crystals may appear. Either observation is accepted here, as on the worksheet.')}</li>
+      <li>Seeing bubbles is an observation only; it is not a confirmatory test for carbon dioxide.</li>
+      <li>See “Teacher notes” below for more details on the simplifications used.</li>
+    </ul>
+    <p><button type="button" class="btn primary" id="fbNewRound">Start a new round</button></p>`;
+  $('#fbNewRound').addEventListener('click', onNewRound);
+}
+
+function explanationHTML(){
+  const obs = p => resultFor(p).category;
+  const s = solve(obs);
+  if(!s) return '<p class="err-box">The explanation could not be generated. Please report this to your teacher.</p>';
+  const cl = (a,b) => CHEM.CATEGORIES[obs(pk(a,b))].label.toLowerCase();
+  const [P,Q] = s.others;
+  return chem(`<ol class="steps">
+    <li><p><span class="obs-tag">Observation</span> Only <b>${s.x} + ${s.y}</b> gave effervescence; no other mixture produced a gas.</p>
+        <p><span class="inf-tag">Inference</span> Of the four solutions, only an acid and a carbonate react to give a gas (CO2). So ${s.x} and ${s.y} are HCl(aq) and Na2CO3(aq), but we do not yet know which is which. (The bubbles alone do not confirm CO2; that needs a limewater test.)</p></li>
+    <li><p><span class="obs-tag">Observation</span> <b>${s.carb}</b> gave a precipitate with both ${P} (${cl(s.carb,P)}) and ${Q} (${cl(s.carb,Q)}). <b>${s.acid}</b> gave a precipitate with only one of them (${s.silver}: ${cl(s.acid,s.silver)}).</p>
+        <p><span class="inf-tag">Inference</span> Carbonate ions form insoluble salts with both Mg^{2+} and Ag^{+}, but chloride ions form an insoluble salt only with Ag^{+}. So <b>${s.carb} = Na2CO3(aq)</b> and <b>${s.acid} = HCl(aq)</b>.</p></li>
+    <li><p><span class="obs-tag">Observation</span> ${s.acid} + ${s.silver} gave a white precipitate; ${s.carb} + ${s.silver} gave a greyish-yellow precipitate.</p>
+        <p><span class="inf-tag">Inference</span> The white precipitate with the acid is AgCl, so <b>${s.silver} = AgNO3(aq)</b>. The greyish-yellow precipitate (Ag2CO3) supports this.</p></li>
+    <li><p><span class="obs-tag">Observation</span> ${s.carb} + ${s.mg} gave a white precipitate; ${s.acid} + ${s.mg} and ${s.mg} + ${s.silver} gave no observable change (in this model).</p>
+        <p><span class="inf-tag">Inference</span> By elimination, <b>${s.mg} = MgSO4(aq)</b>, consistent with a white precipitate of MgCO3 with the carbonate.</p></li>
+  </ol>`);
+}
+
+function teacherNotesHTML(){
+  const rows = [['Na2CO3','MgSO4'],['Na2CO3','HCl'],['Na2CO3','AgNO3'],['MgSO4','HCl'],['HCl','AgNO3'],['MgSO4','AgNO3']].map(([a,b]) => {
+    const rx = CHEM.react(a,b);
+    return '<tr><td>'+CHEM.SUBSTANCES[a].formula+' + '+CHEM.SUBSTANCES[b].formula+'</td><td>'+CHEM.CATEGORIES[rx.category].model+'</td><td>'+(rx.equation||rx.possible||'—')+'</td></tr>';
+  }).join('');
+  return chem(`
+  <p class="small">These notes describe the chemical model (by substance, not by bottle label). Bottle identities are not shown here.</p>
+  <div class="table-wrap"><table class="fb" style="min-width:520px"><thead><tr><th>Mixture (2 cm^{3} of each)</th><th>Model observation</th><th>Equation</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <ul class="notes-list small">
+    <li><b>MgSO4 + AgNO3 (simplified).</b> The model shows “no observable change”, the worksheet’s main answer. Ag2SO4 is only slightly soluble (the worksheet quotes 0.31 g / 100 cm^{3}; reference values vary with temperature). After mixing, [Ag^{+}] ≈ 0.1 mol dm^{-3} and [SO4^{2-}] ≈ 0.5 mol dm^{-3}. A simple concentration-based ion product (≈ 5 × 10^{-3}) exceeds a commonly quoted K<sub>sp</sub> (≈ 1.2 × 10^{-5} at 25 °C). However, the high ionic strength and Mg^{2+}/SO4^{2-} ion pairing greatly lower the effective ion product, and crystallisation can be slow, so the result is close to borderline. The mixture may stay clear, or a small amount of colourless crystals may appear. The worksheet accepts either, and its teacher notes ask for the AgNO3 and MgSO4 concentrations to be monitored. A student category of “white precipitate” here is scored as an accepted alternative.</li>
+    <li><b>Na2CO3 + HCl.</b> With 2 cm^{3} of 1 mol dm^{-3} of each, H^{+} : CO3^{2-} = 1 : 1, not 2 : 1. Some carbonate may only be converted to HCO3^{-} (CO3^{2-} + H^{+} → HCO3^{-}), and effervescence may be less vigorous, especially if acid is added slowly to the carbonate. Local excess of acid still gives visible bubbles. The simulation shows effervescence for either order of addition, following the worksheet. Bubbles are not a confirmatory test for CO2 (use limewater).</li>
+    <li><b>Mg^{2+} + CO3^{2-}.</b> The precipitate formed in water is often a hydrated basic magnesium carbonate rather than pure MgCO3; the DSE-level equation with MgCO3(s) is used.</li>
+    <li><b>Ag2CO3 colour.</b> Fresh Ag2CO3 is often described as pale yellow and can darken on standing in light. The worksheet wording “greyish-yellow” is used. AgCl is white but may turn purplish-grey in light.</li>
+    <li><b>Scoring.</b> The web practice score (identities + observation categories) is not an SBA mark. Keyword feedback on the explanation is preliminary only. Ticking the safety reminder only records that it was read; it does not verify safe practice.</li>
+    <li><b>Data.</b> Progress is saved in this browser (localStorage). The bottle assignment is lightly encoded, not encrypted: a determined student could find it with developer tools. Use the real practical for formal assessment.</li>
+  </ul>`);
+}
+
+/* ---------- Self-check ---------- */
+function* permutations(arr){
+  if(arr.length<=1){ yield arr.slice(); return; }
+  for(let i=0;i<arr.length;i++){ const rest = arr.slice(0,i).concat(arr.slice(i+1)); for(const p of permutations(rest)) yield [arr[i]].concat(p); }
+}
+function runSelfCheck(){
+  const out = []; let pass = true;
+  let sym = 0;
+  for(const a of CHEM.SUB_IDS) for(const b of CHEM.SUB_IDS) if(a!==b){
+    const r1 = CHEM.react(a,b), r2 = CHEM.react(b,a);
+    if(r1 && r1===r2) sym++; else pass = false;
+  }
+  out.push('Reaction lookup: '+sym+' / 12 ordered pairs found, and X + Y gives the same result as Y + X.');
+  const expected = {AB:'white_ppt', AC:'gas', AD:'grey_ppt', BC:'none', BD:'none', CD:'white_ppt'};
+  const wsOK = PAIRS.every(p => resultForAsg(WORKSHEET_ASSIGNMENT,p).category === expected[p]);
+  if(!wsOK) pass = false;
+  out.push('Worksheet mode reproduces the worksheet’s six observations: '+(wsOK?'yes':'NO'));
+  let n=0, ok1=0, ok2=0, enc=0;
+  for(const perm of permutations(CHEM.SUB_IDS)){
+    n++; const asg = {}; LABELS.forEach((l,i) => asg[l] = perm[i]);
+    const s1 = solve(p => resultForAsg(asg,p).category);
+    if(s1 && LABELS.every(l => s1.map[l]===asg[l])) ok1++;
+    const s2 = solve(p => { const x = resultForAsg(asg,p); return x.alt.length ? x.alt[0] : x.category; });
+    if(s2 && LABELS.every(l => s2.map[l]===asg[l])) ok2++;
+    const d = ROUND.decode(ROUND.encode(asg,'chk'),'chk');
+    if(d && LABELS.every(l => d[l]===asg[l])) enc++;
+  }
+  if(ok1!==n || ok2!==n || enc!==n) pass = false;
+  out.push('All '+n+' possible assignments are solved correctly from the observations: '+ok1+' / '+n+'.');
+  out.push('…also with the alternative observation (Ag₂SO₄ crystals): '+ok2+' / '+n+'.');
+  out.push('Save / restore of assignments: '+enc+' / '+n+'.');
+  return {pass, out};
+}
+
+/* =====================================================================
+   6. INIT
+   ===================================================================== */
+function applyMotion(){
+  const pref = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const on = state.reduceMotion===null ? pref : state.reduceMotion;
+  document.body.classList.toggle('reduce-motion', !!on);
+}
+
+function init(){
+  try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); }catch(e){ storageOK = false; }
+  load();
+  applyMotion();
+  buildStatic();
+  Anim.init(); Anim.idle();
+
+  $('#ackChk').addEventListener('change', e => { $('#startLabBtn').disabled = !e.target.checked; });
+  $('#startLabBtn').addEventListener('click', () => {
+    if(!$('#ackChk').checked) return;
+    state.safetyAck = true; save(); renderAll();
+    $('#lab').scrollIntoView({block:'start'}); $('#lab').focus({preventScroll:true});
+  });
+  $('#mixBtn').addEventListener('click', doMix);
+  $('#clearSelBtn').addEventListener('click', () => { selected = []; renderBottles(); });
+  $('#goRecordBtn').addEventListener('click', e => goRecord(e.currentTarget.dataset.pair));
+  $('#log').addEventListener('click', e => { const b = e.target.closest('[data-view]'); if(b) viewEntry(R().log[+b.dataset.view]); });
+  $('#clearRoundBtn').addEventListener('click', onClearRound);
+  $('#newRoundBtn').addEventListener('click', onNewRound);
+  $$('input[name=mode]').forEach(r => r.addEventListener('change', e => onModeChange(e.target.value)));
+  $('#reduceMotionChk').addEventListener('change', e => { state.reduceMotion = e.target.checked; save(); applyMotion(); });
+  $('#hintBtn').addEventListener('click', () => {
+    if(R().hintLevel>=3) return;
+    R().hintLevel++; save(); renderHints();
+    const hs = $$('#hintList .hint'); if(hs.length) hs[hs.length-1].scrollIntoView({block:'nearest'});
+  });
+  $('#submitBtn').addEventListener('click', onSubmit);
+  $('#selfCheckBtn').addEventListener('click', () => {
+    const res = runSelfCheck();
+    $('#selfCheckOut').innerHTML = '<p class="'+(res.pass?'ok-box':'err-box')+'">'+(res.pass?'✓ All checks passed.':'✗ Some checks failed.')+'</p><ul>'+res.out.map(t => '<li>'+esc(t)+'</li>').join('')+'</ul>';
+  });
+
+  renderAll();
+  const sc = runSelfCheck();
+  if(!sc.pass) console.warn('Self-check failed', sc.out);
+}
+document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
