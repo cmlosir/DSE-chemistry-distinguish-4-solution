@@ -52,8 +52,9 @@ select:disabled,input:disabled,textarea:disabled{background:#f0f2f5;color:#6b768
 textarea{min-height:120px;resize:vertical}
 label{display:block;font-weight:600;font-size:.92rem}
 [aria-invalid="true"]{border-color:var(--bad);box-shadow:0 0 0 2px var(--bad-bg)}
-.ss{display:inline-flex;flex-direction:column;vertical-align:-.45em;line-height:1;font-size:.72em;margin-left:1px}
-.ss sup,.ss sub{font-size:1em;line-height:1;vertical-align:baseline;position:static}
+/* Stacked charge over subscript (e.g. CO3 2-, SO4 2-): baseline = subscript line */
+.ss{display:inline-block;vertical-align:-.3em;line-height:.9;font-size:.72em;margin-left:1px;text-align:left}
+.ss sup,.ss sub{display:block;font-size:1em;line-height:.9;vertical-align:baseline;position:static}
 sub,sup{line-height:0}
 .task-grid{display:grid;gap:14px}
 @media(min-width:860px){.task-grid{grid-template-columns:1fr 1fr}}
